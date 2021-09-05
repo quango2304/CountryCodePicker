@@ -1,5 +1,7 @@
-import 'package:country_code_picker/country_code_picker.dart';
+import 'package:country_code_picker/country_code.dart';
 import 'package:country_code_picker/country_localizations.dart';
+import 'package:country_code_picker/selection_dialog.dart';
+import 'package:cupertino_rounded_corners/cupertino_rounded_corners.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -91,77 +93,102 @@ class _MyAppState extends State<MyApp> {
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      home: new Scaffold(
-        appBar: new AppBar(
-          title: const Text('CountryPicker Example'),
+      home: Home(),
+    );
+  }
+}
+
+class Home extends StatefulWidget {
+  const Home({Key key}) : super(key: key);
+
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  @override
+  Widget build(BuildContext context) {
+    final _searchBoxBorder = OutlineInputBorder(
+        borderRadius: const BorderRadius.all(
+          Radius.circular(16.0),
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              CountryCodePicker(
-                onChanged: print,
-                // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                initialSelection: 'IT',
-                favorite: ['+39', 'FR'],
-                countryFilter: ['IT', 'FR'],
-                showFlagDialog: false,
-                comparator: (a, b) => b.name.compareTo(a.name),
-                //Get the country information relevant to the initial selection
-                onInit: (code) =>
-                    print("on init ${code.name} ${code.dialCode} ${code.name}"),
+        borderSide: BorderSide(color: Colors.transparent));
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Padding(
+        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+        child: SelectionDialog(
+          onSelect: (countryCode) {},
+          searchPadding: EdgeInsets.only(left: 24, right: 24, top: 10, bottom: 10),
+          backgroundColor: Color(0xffF8F8F8),
+          searchDecoration: InputDecoration(
+            contentPadding: EdgeInsets.only(left: 12, right: 12, top: 2),
+            border: _searchBoxBorder,
+            focusedBorder: _searchBoxBorder,
+            enabledBorder: _searchBoxBorder,
+            errorBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
+            filled: true,
+            fillColor: Colors.grey.withOpacity(0.1),
+            prefixIcon: Padding(
+              padding: const EdgeInsets.only(left: 10, right: 8),
+              child: Icon(
+                Icons.search,
               ),
-              CountryCodePicker(
-                onChanged: print,
-                // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                initialSelection: 'IT',
-                favorite: ['+39', 'FR'],
-                countryFilter: ['IT', 'FR'],
-                // flag can be styled with BoxDecoration's `borderRadius` and `shape` fields
-                flagDecoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(7),
-                ),
-              ),
-              SizedBox(
-                width: 400,
-                height: 60,
-                child: CountryCodePicker(
-                  onChanged: print,
-                  hideMainText: true,
-                  showFlagMain: true,
-                  showFlag: false,
-                  initialSelection: 'TF',
-                  hideSearch: true,
-                  showCountryOnly: true,
-                  showOnlyCountryWhenClosed: true,
-                  alignLeft: true,
-                ),
-              ),
-              SizedBox(
-                width: 400,
-                height: 60,
-                child: CountryCodePicker(
-                  onChanged: (e) => print(e.toLongString()),
-                  initialSelection: 'TF',
-                  showCountryOnly: true,
-                  showOnlyCountryWhenClosed: true,
-                  favorite: ['+39', 'FR'],
-                ),
-              ),
-              SizedBox(
-                width: 100,
-                height: 60,
-                child: CountryCodePicker(
-                  enabled: false,
-                  onChanged: (c) => c.name,
-                  initialSelection: 'TF',
-                  showCountryOnly: true,
-                  showOnlyCountryWhenClosed: true,
-                  favorite: ['+39', 'FR'],
-                ),
-              ),
-            ],
+            ),
+            prefixIconConstraints: BoxConstraints(),
+            suffixIconConstraints: BoxConstraints(),
+            hintText: "Search",
+            hintStyle: TextStyle(color: Colors.grey),
           ),
+          itemBuilder: (country) {
+            return Padding(
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 24),
+              child: Material(
+                shape: SquircleBorder(
+                  radius: BorderRadius.all(
+                    Radius.circular(40.0),
+                  ),
+                ),
+                color: Colors.white,
+                elevation: 0,
+                child: Container(
+                  width: double.maxFinite,
+                  padding: EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+                  child: Flex(
+                    direction: Axis.horizontal,
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.only(right: 16.0),
+                        child: Material(
+                          clipBehavior: Clip.antiAlias,
+                          shape: SquircleBorder(
+                            radius: BorderRadius.all(
+                              Radius.circular(8.0),
+                            ),
+                          ),
+                          child: Image.asset(
+                            country.flagUri,
+                            package: 'country_code_picker',
+                            width: 40,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 4,
+                        child: Text(
+                          country.toCountryStringOnly(),
+                        ),
+                      ),
+                      Text(
+                        country.dialCode,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
