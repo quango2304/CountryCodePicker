@@ -1,6 +1,6 @@
 name: country_pick_screen
-description: A flutter package for showing a country code selector. In addition it gives the possibility to select a list of favorites countries, as well as to search using a simple searchbox  
-version: 2.0.0
+description: A flutter package for showing a country pick screen, you can implement your own item UI
+version: 2.0.1
 homepage: https://github.com/quango2304/CountryCodePicker
 
 environment:
