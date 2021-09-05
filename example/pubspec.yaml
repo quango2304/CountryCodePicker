@@ -17,7 +17,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_rounded_corners:
-  country_code_picker:
+  country_pick_screen:
     path: ../
   flutter_localizations:
     sdk: flutter

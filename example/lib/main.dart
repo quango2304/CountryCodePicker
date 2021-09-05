@@ -1,6 +1,5 @@
-import 'package:country_code_picker/country_code.dart';
-import 'package:country_code_picker/country_localizations.dart';
-import 'package:country_code_picker/selection_dialog.dart';
+import 'package:country_pick_screen/country_localizations.dart';
+import 'package:country_pick_screen/selection_dialog.dart';
 import 'package:cupertino_rounded_corners/cupertino_rounded_corners.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -117,8 +116,7 @@ class _HomeState extends State<Home> {
       backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-        child: SelectionDialog(
-          onSelect: (countryCode) {},
+        child: CountryPickScreen(
           searchPadding: EdgeInsets.only(left: 24, right: 24, top: 10, bottom: 10),
           backgroundColor: Color(0xffF8F8F8),
           searchDecoration: InputDecoration(
@@ -169,7 +167,7 @@ class _HomeState extends State<Home> {
                           ),
                           child: Image.asset(
                             country.flagUri,
-                            package: 'country_code_picker',
+                            package: 'country_pick_screen',
                             width: 40,
                           ),
                         ),

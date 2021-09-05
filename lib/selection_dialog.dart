@@ -1,27 +1,18 @@
-import 'package:country_code_picker/country_code.dart';
-import 'package:country_code_picker/country_codes.dart';
-import 'package:country_code_picker/country_localizations.dart';
+import 'package:country_pick_screen/country_code.dart';
+import 'package:country_pick_screen/country_codes.dart';
+import 'package:country_pick_screen/country_localizations.dart';
 import 'package:flutter/material.dart';
 
 /// selection dialog used for selection of the country code
-class SelectionDialog extends StatefulWidget {
+class CountryPickScreen extends StatefulWidget {
   final InputDecoration searchDecoration;
   final TextStyle? searchStyle;
-  final TextStyle? textStyle;
   final BoxDecoration? boxDecoration;
   final WidgetBuilder? emptySearchBuilder;
-  final double flagWidth;
-  final Decoration? flagDecoration;
-  final Size? size;
   final bool hideSearch;
-  final Icon? closeIcon;
-  final Function(CountryCode country) onSelect;
 
   /// Background color of SelectionDialog
   final Color? backgroundColor;
-
-  /// Boxshaow color of SelectionDialog that matches CountryCodePicker barrier color
-  final Color? barrierColor;
 
   /// Use this property to change the order of the options
   final Comparator<CountryCode>? comparator;
@@ -33,21 +24,14 @@ class SelectionDialog extends StatefulWidget {
 
   final EdgeInsets? searchPadding;
 
-  SelectionDialog(
+  CountryPickScreen(
       {Key? key,
       this.emptySearchBuilder,
       InputDecoration searchDecoration = const InputDecoration(),
       this.searchStyle,
-      this.textStyle,
       this.boxDecoration,
-      this.flagDecoration,
-      this.flagWidth = 32,
-      this.size,
       this.backgroundColor,
-      this.barrierColor,
       this.hideSearch = false,
-      this.closeIcon,
-      required this.onSelect,
       this.comparator,
       this.countryFilter,
       required this.itemBuilder,
@@ -79,16 +63,16 @@ class SelectionDialog extends StatefulWidget {
           .toList();
     }
 
-    return _SelectionDialogState(elements);
+    return _CountryPickScreenState(elements);
   }
 }
 
-class _SelectionDialogState extends State<SelectionDialog> {
+class _CountryPickScreenState extends State<CountryPickScreen> {
   /// this is useful for filtering purpose
   late List<CountryCode> filteredElements;
   final List<CountryCode> elements;
 
-  _SelectionDialogState(this.elements);
+  _CountryPickScreenState(this.elements);
 
   @override
   void initState() {
@@ -160,9 +144,5 @@ class _SelectionDialogState extends State<SelectionDialog> {
               e.name!.toUpperCase().contains(s))
           .toList();
     });
-  }
-
-  void _selectItem(CountryCode e) {
-    widget.onSelect(e);
   }
 }
