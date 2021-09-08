@@ -1,6 +1,7 @@
 import 'package:country_pick_screen/country_localizations.dart';
-import 'package:country_pick_screen/selection_dialog.dart';
+import 'package:country_pick_screen/country_picker_screen.dart';
 import 'package:cupertino_rounded_corners/cupertino_rounded_corners.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -107,64 +108,31 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    final _searchBoxBorder = OutlineInputBorder(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(16.0),
-        ),
-        borderSide: BorderSide(color: Colors.transparent));
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
         child: CountryPickScreen(
-          searchPadding: EdgeInsets.only(left: 24, right: 24, top: 10, bottom: 10),
           backgroundColor: Color(0xffF8F8F8),
-          searchDecoration: InputDecoration(
-            contentPadding: EdgeInsets.only(left: 12, right: 12, top: 2),
-            border: _searchBoxBorder,
-            focusedBorder: _searchBoxBorder,
-            enabledBorder: _searchBoxBorder,
-            errorBorder: InputBorder.none,
-            disabledBorder: InputBorder.none,
-            filled: true,
-            fillColor: Colors.grey.withOpacity(0.1),
-            prefixIcon: Padding(
-              padding: const EdgeInsets.only(left: 10, right: 8),
-              child: Icon(
-                Icons.search,
-              ),
-            ),
-            prefixIconConstraints: BoxConstraints(),
-            suffixIconConstraints: BoxConstraints(),
-            hintText: "Search",
-            hintStyle: TextStyle(color: Colors.grey),
-          ),
-          itemBuilder: (country) {
-            return Padding(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 24),
-              child: Material(
-                shape: SquircleBorder(
-                  radius: BorderRadius.all(
-                    Radius.circular(40.0),
-                  ),
-                ),
-                color: Colors.white,
-                elevation: 0,
-                child: Container(
+          hideSearch: true,
+          bodyBuilder: (countries) {
+            return CupertinoPicker(
+              magnification: 1,
+              onSelectedItemChanged: (int value) {},
+              backgroundColor: Colors.white,
+              itemExtent: 80,
+              looping: true,
+              children: countries.map((country) {
+                return Container(
                   width: double.maxFinite,
-                  padding: EdgeInsets.symmetric(vertical: 24, horizontal: 24),
-                  child: Flex(
-                    direction: Axis.horizontal,
+                  height: 80,
+                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  child: Row(
                     children: <Widget>[
                       Container(
                         margin: const EdgeInsets.only(right: 16.0),
-                        child: Material(
-                          clipBehavior: Clip.antiAlias,
-                          shape: SquircleBorder(
-                            radius: BorderRadius.all(
-                              Radius.circular(8.0),
-                            ),
-                          ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(4),
                           child: Image.asset(
                             country.flagUri,
                             package: 'country_pick_screen',
@@ -183,8 +151,8 @@ class _HomeState extends State<Home> {
                       )
                     ],
                   ),
-                ),
-              ),
+                );
+              }).toList(),
             );
           },
         ),

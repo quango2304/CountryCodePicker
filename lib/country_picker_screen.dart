@@ -1,6 +1,7 @@
 import 'package:country_pick_screen/country_code.dart';
 import 'package:country_pick_screen/country_codes.dart';
 import 'package:country_pick_screen/country_localizations.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 /// selection dialog used for selection of the country code
@@ -20,7 +21,7 @@ class CountryPickScreen extends StatefulWidget {
   /// used to customize the country list
   final List<String>? countryFilter;
 
-  final Widget Function(CountryCode country) itemBuilder;
+  final Widget Function(List<CountryCode> country) bodyBuilder;
 
   final EdgeInsets? searchPadding;
 
@@ -34,7 +35,7 @@ class CountryPickScreen extends StatefulWidget {
       this.hideSearch = false,
       this.comparator,
       this.countryFilter,
-      required this.itemBuilder,
+      required this.bodyBuilder,
       this.searchPadding})
       : this.searchDecoration = searchDecoration.prefixIcon == null
             ? searchDecoration.copyWith(prefixIcon: Icon(Icons.search))
@@ -104,23 +105,13 @@ class _CountryPickScreenState extends State<CountryPickScreen> {
               ),
             ),
           Expanded(
-            child: (filteredElements.isEmpty)
-                ? _buildEmptySearchWidget(context)
-                : ListView.builder(
-                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
-                    itemBuilder: (_, i) {
-                      return _buildOption(filteredElements[i]);
-                    },
-                    itemCount: filteredElements.length,
-                  ),
-          ),
+              child: (filteredElements.isEmpty)
+                  ? _buildEmptySearchWidget(context)
+                  : widget.bodyBuilder(filteredElements)
+              ),
         ],
       ),
     );
-  }
-
-  Widget _buildOption(CountryCode e) {
-    return widget.itemBuilder(e);
   }
 
   Widget _buildEmptySearchWidget(BuildContext context) {

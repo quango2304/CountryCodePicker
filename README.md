@@ -7,7 +7,7 @@ A flutter package for showing a country pick screen, you can implement your own 
 It supports i18n for 70 languages.
 
 ## Demo
-![](screenshots/screen1.png)
+![](screenshots/screen1.jpeg)
 
 ### i18n
 
